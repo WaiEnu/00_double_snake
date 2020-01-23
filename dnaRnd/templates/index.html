@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="wrapper" id="app">
+  <header>
+    <div class="formset">
+      <form id="generate" method="POST" action="/generate">
+        <div class="fieldset">
+          <label class="field_input" for="length">塩基長　　　：<input name="length" id="length" value="100" type="number" step="1" min="0" max="100000000"></label>
+          <label class="field_input" for="iteration">配列本数　　：<input name="iteration" id="number" value="10" type="number" step="1" min="0" max="1000"></label>
+          <label class="field_input" for="locate">変異導入箇所：<input name="locate" id="locate" value="1" type="number" step="1" min="0" max="100000000"></label>
+          <label class="field_input" for="base">導入変異　　：<select name="base" id="base">
+            <option value="1">A挿入</option>
+            <option value="2">G挿入</option>
+            <option value="3">C挿入</option>
+            <option value="4">T挿入</option>
+            <option value="5">削除</option>
+          </select></label>
+        </div>
+        <div class="field_btn"><input type="submit" value="送信"></div>
+      </form>
+    </div>
+    <a href="/">戻る</a>
+  </header>
+  <main class="vue">
+    <ul class="tabs">
+      <li v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}">元配列</li>
+      <li v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}">変異配列</li>
+    </ul>
+    <ul class="contents">
+      <li v-if="isActive === '1'">
+        <div class="graph">
+          {{ graph_align }}
+        </div>
+        <div class="table">
+          {{ table_align }}
+        </div>
+      </li>
+      <li v-else-if="isActive === '2'">
+        <div class="graph">
+          {{ graph_mutate }}
+        </div>
+        <div class="table">
+          {{ table_mutate }}
+        </div>
+      </li>
+    </ul>
+  </main>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/static/js/main.js" type="text/javascript"></script>
+<script src="/static/js/deta.js" type="text/javascript"></script>
+{% endblock %}
