@@ -56,11 +56,7 @@ def getPlotDeta(dic):
 
 def getGraphDeta(dic,length):
     deta=caliculate.align_deta(getRows(dic,'protain'),length)
-    deta_stt= getRows(deta,'STT')
-    deta_stp= getRows(deta,'STP')
-    deta_len= getRows(deta,'LEN')
-    dic = {'STT':deta_stt,'STP':deta_stp,'LEN':deta_len}
-    return dic
+    return deta
 
 def getTableDeta(dic):
     master_DNA=getRows(dic,'DNA')
@@ -81,6 +77,10 @@ def getRowDna(dictionary):
 def make_table_sec(table_deta):
     table=caliculate.make_table_sec(table_deta)
     return table
+
+def make_read_sec(read_deta):
+    read=caliculate.make_read_sec(read_deta)
+    return read
 
 def make_graph_sec(graph_deta):
     graph=caliculate.make_graph_sec(graph_deta)
