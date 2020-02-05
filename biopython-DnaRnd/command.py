@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html',graph_o='',graph_m='')
+    return render_template('index.html',graph_o=None,graph_m=None)
 
 @app.route('/generate', methods=['POST'])
 def gen():
