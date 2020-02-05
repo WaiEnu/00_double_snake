@@ -29,15 +29,14 @@ def transcribe(sequence):
     DNA_sequence = Seq(sequence, IUPAC.ambiguous_dna)
     cDNA_sequence = DNA_sequence.complement()
     mRNA_sequence = DNA_sequence.transcribe()
-    return {'DNA':DNA_sequence,'cDNA':cDNA_sequence,'mRNA':mRNA_sequence}
+    return {'DNA':str(DNA_sequence),'cDNA':str(cDNA_sequence),'mRNA':str(mRNA_sequence)}
 
 def translate(sequence):
-    read_seq=str(sequence)
-    start = re.finditer(r"AUG",read_seq)
+    start = re.finditer(r"AUG",sequence)
     result=[]
     for s in start:
         point=s.start()
-        tmp=make_codon(read_seq,point)
+        tmp=make_codon(sequence,point)
         result.append(tmp)
     return result
 
@@ -46,34 +45,24 @@ def make_codon(read_seq,start):
     idx=0
     result=[]
     pre_codon = read_seq[start::]
-    result.append(start)
     for i in range(0, len(pre_codon), k):
         codon = pre_codon[i:i+k]
         idx=start+i
         if codon in amino["x"]:
-            result.append(start+i)
-            return formatResult(result,read_seq)
+            return formatResult(start,idx,result,read_seq)
         elif len(codon)<3 :
-            result.append(start+i)
-            return formatResult(result,read_seq)
+            return formatResult(start,idx,result,read_seq)
         else:
             result.append(codon)
-    result.append(idx)
-    return formatResult(result,read_seq)
+    return formatResult(start,idx,result,read_seq)
 
-def read_codon(codon_list):
-    result =[]
-    for i in range(0,len(codon_list)):
-        aminosan=codon_list[i]
-        aminosan_check = [k for k, v in amino.items() if codon_list[i] in v]
-        if len(aminosan_check) != 0:
-            aminosan = aminosan_check[0]
-        result.append(aminosan)
-    return result
+def read_codon(codon):
+    read_seq= Seq(codon, IUPAC.ambiguous_rna)
+    result =read_seq.translate()
+    return str(result)
 
-def formatResult(result,read_seq):
-    codon=result[1:len(result)-1]
-    prot=read_codon(codon)
-    start=result[0]
-    stop=result[-1]
-    return {'STT':start,'STP':stop,'LEN':len(codon),'codon':sep.join(codon),'protain':sep.join(prot),'mRNA':read_seq}
+def formatResult(start,stop,codon_list,read_seq):
+    codon=sep.join(codon_list)
+    prot=read_codon(''.join(codon_list))
+    dic = {'STT':start,'STP':stop,'LEN':len(prot),'codon':codon,'protain':prot,'mRNA':read_seq}
+    return dic
