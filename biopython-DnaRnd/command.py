@@ -33,13 +33,13 @@ def gen():
     base = request.form['base']
 
     data_o = generate.generate_origin(length,iteration)
-    data_m = generate.generate_mutant(data_o['table']['DNA'],base,locate,length)
-    table_o = make_table_sec(data_o['table'])
-    table_m = make_table_sec(data_m['table'])
-    read_o = make_read_sec(data_o['read'])
-    read_m = make_read_sec(data_m['read'])
-    graph_o = make_graph_df(data_o['read'])
-    graph_m = make_graph_df(data_m['read'])
+    data_m = generate.generate_mutant(data_o['DNA'],base,locate,length)
+    table_o = make_table_sec(data_o)
+    table_m = make_table_sec(data_m)
+    read_o = make_read_sec(data_o)
+    read_m = make_read_sec(data_m)
+    graph_o = make_graph_df(data_o)
+    graph_m = make_graph_df(data_m)
     data.origin=graph_m
     data.mutate=graph_o
     data.isNull=False
