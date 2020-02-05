@@ -2,7 +2,7 @@ function drawGraph(value) {
     var id = "plt_" + value;
     var plotdata = document.getElementById(id);
     $.get("/plot/" + value, function(data) {
-        plotdata.src = "data:image/png:base64," + data;
+        plotdata.src = data;
     });
 };
 
