@@ -43,9 +43,7 @@ def make_codon(pre_codon,start):
     for i in range(0, len(pre_codon), k):
         codon = pre_codon[i:i+k]
         idx=start+i
-        if codon in amino["x"]:
-            return formatResult(start,idx,result)
-        elif len(codon)<3 :
+        if codon in amino["x"] or len(codon)<3 :
             return formatResult(start,idx,result)
         else:
             result.append(codon)
