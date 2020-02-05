@@ -71,7 +71,8 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
 <script src="/static/js/main.js" type="text/javascript"></script>
 <script type="text/javascript">
-  function drawGraph(obj,id) {
+  function drawGraph(obj) {
+      var id = "graph_" + obj;
       var idx = obj.selectedIndex;
       var value = obj.options[idx].value;
       var plotdata = document.getElementById(id);
@@ -81,10 +82,10 @@
   };
   $(document).ready(function() {
       //initialize components
-      var target_o = ["origin","graph_origin"]
-      var target_m = ["mutate","graph_mutate"]
-      drawGraph(target_o[0],target_o[1]);
-      drawGraph(target_m[0],target_m[1]);
+      var target_o = "origin";
+      var target_m = "mutate";
+      drawGraph(target_o);
+      drawGraph(target_m);
   });
 </script>
 {% endblock %}
