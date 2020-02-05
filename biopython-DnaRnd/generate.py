@@ -1,4 +1,3 @@
-import detaset
 import genetics
 
 def generate_origin(length,iteration):
@@ -23,13 +22,17 @@ def generate_mutant(origin,base,locate,length):
     return dic
 
 def getTable(master):
-    master_STT=detaset.getRow(master,'STT')
-    master_STP=detaset.getRow(master,'STP')
-    master_LEN=detaset.getRow(master,'LEN')
-    master_COD=detaset.getRow(master,'codon')
-    master_PRO=detaset.getRow(master,'protain')
-    master_DNA=detaset.getRow(master,'DNA')
-    master_CNA=detaset.getRow(master,'cDNA')
-    master_RNA=detaset.getRow(master,'mRNA')
+    master_STT=getRow(master,'STT')
+    master_STP=getRow(master,'STP')
+    master_LEN=getRow(master,'LEN')
+    master_COD=getRow(master,'codon')
+    master_PRO=getRow(master,'protain')
+    master_DNA=getRow(master,'DNA')
+    master_CNA=getRow(master,'cDNA')
+    master_RNA=getRow(master,'mRNA')
     dic = {'STT':master_STT,'STP':master_STP,'LEN':master_LEN,'codon':master_COD,'protain':master_PRO,'DNA':master_DNA,'cDNA':master_CNA,'mRNA':master_RNA}
     return dic
+
+def getRow(dic,str_obj):
+    arr = [d.get(str_obj) for d in dic]
+    return arr

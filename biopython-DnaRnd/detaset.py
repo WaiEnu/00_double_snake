@@ -34,7 +34,3 @@ def dna():
 
 def amino():
     return const.amino_list
-
-def getRow(dic,str_obj):
-    arr = [d.get(str_obj) for d in dic]
-    return arr
