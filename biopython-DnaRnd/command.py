@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',graph_o='',graph_m='')
 
 @app.route('/generate', methods=['POST'])
 def gen():
@@ -31,8 +31,8 @@ def gen():
     table_m = make_table_sec(data_m['table'])
     read_o = make_read_sec(data_o['read'])
     read_m = make_read_sec(data_m['read'])
-    graph_o = make_graph_sec(data_o['read'],'origin')
-    graph_m = make_graph_sec(data_m['read'],'mutate')
+    graph_o = make_graph_origin(data_o['read'])
+    graph_m = make_graph_mutate(data_m['read'])
     return render_template('index.html',table_o=table_o,table_m=table_m,read_o=read_o,read_m=read_m,graph_o=graph_o,graph_m=graph_m)
 
 def make_table_sec(table_deta):
@@ -50,7 +50,14 @@ def make_read_sec(read_deta):
 # 生成した遺伝暗号の情報を見たい
 # → 配列の長さを見よう
 # → 開始位置を割り出せば大体の長さの見当がつく？
-@app.route("/plot/<func>")
+@app.route("/plot/origin")
+def make_graph_origin(graph_deta):
+    return make_graph_sec(graph_deta,'origin')
+
+@app.route("/plot/mutate")
+def make_graph_mutate(graph_deta):
+    return make_graph_sec(graph_deta,'mutate')
+
 def make_graph_sec(graph_deta,title):
     graph_ret_df=DataFrame(graph_deta)
     graph_df=graph_ret_df[['STT','STP','LEN']]
@@ -58,8 +65,7 @@ def make_graph_sec(graph_deta,title):
     fig, axes = plt.subplots(2, 2, figsize=(10, 10))
     sns.scatterplot(x='STT', y='STP', data=graph_df, ax=axes[0,0])
     sns.scatterplot(x='STT', y='LEN', data=graph_df, ax=axes[1,0])
-    sns.distplot(graph_df['LEN'], ax=axes[0,1])
-    plt.savefig('static/graph_'+title+'.png')
+    sns.countplot(x="LEN", data=graph_df)
     canvas = FigureCanvasAgg(fig)
     png_output = BytesIO()
     canvas.print_png(png_output)
