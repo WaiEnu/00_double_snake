@@ -22,12 +22,6 @@
     <a href="/">戻る</a>
   </header>
   <main class="vue">
-    <div class="graph" style="display: flex;">
-      <div id="graph_origin">
-      </div>
-      <div id="graph_mutate">
-      </div>
-    </div>
     <ul class="tabs">
       <li class="nav-item global"
         :id="icon.id"
@@ -41,8 +35,12 @@
     </ul>
     <div class="contents" v-if="activePageName == 'graph'">
       <div id="graph_origin">
+        <h4>origin</h4>
+        <img id=plt_origin></img>
       </div>
       <div id="graph_mutate">
+        <h4>mutate</h4>
+        <img id=plt_mutate></img>
       </div>
     </div>
     <div class="contents" v-if="activePageName == 'align'">
@@ -70,22 +68,5 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
 <script src="/static/js/main.js" type="text/javascript"></script>
-<script type="text/javascript">
-  function drawGraph(obj) {
-      var id = "graph_" + obj;
-      var idx = obj.selectedIndex;
-      var value = obj.options[idx].value;
-      var plotdata = document.getElementById(id);
-      $.get("/plot/" + value, function(data) {
-          plotdata.src = "data:image/png:base64," + data;
-      });
-  };
-  $(document).ready(function() {
-      //initialize components
-      var target_o = "origin";
-      var target_m = "mutate";
-      drawGraph(target_o);
-      drawGraph(target_m);
-  });
-</script>
+<script type="text/javascript" src="/static/js/data.js" type="text/javascript"></script>
 {% endblock %}
