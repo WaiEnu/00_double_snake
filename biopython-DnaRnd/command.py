@@ -36,17 +36,17 @@ def gen():
 
 @app.route("/plot/origin")
 def make_graph_origin():
+    src="data:image/png:base64," 
     if data.isNull is False:
-        return generate.make_graph_sec(data.origin,'origin')
-    else:
-        return ''
+        src += generate.make_graph_sec(data.origin,'origin')
+    return src
 
 @app.route("/plot/mutate")
 def make_graph_mutate():
+    src="data:image/png:base64," 
     if data.isNull is False:
-        return generate.make_graph_sec(data.mutate,'mutate')
-    else:
-        return ''
+        src += generate.make_graph_sec(data.mutate,'mutate')
+    return src
 
 if __name__ == '__main__':
     app.debug = True
