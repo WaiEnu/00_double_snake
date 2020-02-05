@@ -29,6 +29,9 @@ const.dna = ["A","G","C","T"]
 def sep_str():
     return const.sep
 
+def sepN_str():
+    return ''
+
 def dna():
     return const.dna
 
