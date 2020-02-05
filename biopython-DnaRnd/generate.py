@@ -8,7 +8,8 @@ def generate_origin(length,iteration):
     for i in range(0,ittr):
         pre_seq=genetics.rndn_sequence(lens)
         origin.append(genetics.transcribe(pre_seq))
-    return {'table':getTable(origin),'read':getReadable(origin)}
+    dic = {'table':getTable(origin),'read':getReadable(origin)}
+    return dic
 
 def generate_mutant(origin,base,locate,length):
     index = int(base)
@@ -16,10 +17,10 @@ def generate_mutant(origin,base,locate,length):
     end = int(length)
     mutate=[]
     for sequence in origin:
-        mutable_seq = str(sequence.tomutable())
-        pre_seq=genetics.one_flame_shift(mutable_seq,index,start,end)
+        pre_seq=genetics.one_flame_shift(sequence,index,start,end)
         mutate.append(genetics.transcribe(pre_seq))
-    return {'table':getTable(mutate),'read':getReadable(mutate)}
+    dic = {'table':getTable(mutate),'read':getReadable(mutate)}
+    return dic
 
 def getTable(sequences):
     master=sequences

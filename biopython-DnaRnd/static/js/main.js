@@ -2,12 +2,8 @@ const vm = new Vue({
     el: '#app',
     delimiters: ["[[", "]]"],
     data: {
-      activePageName: 'graph',
+      activePageName: 'read',
       icons: [
-        {
-          id: 'graph',
-          text: 'graph'
-        },
         {
           id: 'align',
           text: 'align'
