@@ -4,7 +4,9 @@ from random import choice
 import re
 
 dna = "AGCT"
+start_str="M"
 stop_str="@"
+stop_list=["UAA","UAG","UGA"]
 
 def generate_origin(length,iteration):
     ittr = int(iteration)
@@ -55,27 +57,40 @@ def translate(sequence):
     DNA_seq = Seq(sequence, IUPAC.ambiguous_dna)
     cDNA_seq = DNA_seq.complement()
     mRNA_seq = DNA_seq.transcribe()
+    read_seq = str(mRNA_seq)
+    start = re.finditer(r"AUG",read_seq)
+    dic=[]
+    for s in start:
+        tmp=make_codon(read_seq,s.start())
+        tmp.update({'DNA':str(DNA_seq),'cDNA': str(cDNA_seq),'mRNA': read_seq})
+        dic.append(tmp)
+    return dic
+
+def make_codon(read_seq,start):
+    k=3
     result=[]
-    for i in range(0,3):
-        pre_seq=mRNA_seq[i::].translate(stop_symbol=stop_str)
-        start = re.finditer(r"M",str(pre_seq))
-        for s in start:
-            point=s.start()
-            tmp=make_codon(point,mRNA_seq[point::],pre_seq[point::])
-            tmp.update({'DNA':str(DNA_seq),'cDNA':str(cDNA_seq),'mRNA':str(mRNA_seq)})
-            result.append(tmp)
-    return result
+    pre_codon = read_seq[start::]
+    result.append(str(start))
+    for i in range(0, len(pre_codon), k):
+        codon = pre_codon[i:i+k]
+        if codon in stop_list:
+            result.append(str(start+i))
+            return formatResult(result,pre_codon[::start+i])
+        elif len(codon)<3 :
+            result.append(str(start+i))
+            return formatResult(result,pre_codon[::start+i])
+        else:
+            result.append(codon)
+    return formatResult(result,pre_codon)
 
-def make_codon(start,read_seq,pre_codon):
-    idx=0
-    for i in range(0, len(pre_codon)):
-        idx=start+i*3
-        if pre_codon[i] == stop_str:
-            return formatResult(start,idx,read_seq[::idx],read_codon(pre_codon[::idx]))
-    return formatResult(start,idx,read_seq[::idx],read_codon(pre_codon[::idx]))
+def read_codon(pre_codon):
+    codon=Seq(pre_codon, IUPAC.ambiguous_rna)
+    result=codon.translate()
+    return str(result)
 
-def read_codon(codon, sep='-' ,k=3):
-    return sep.join([codon[i:i+k] for i in range(0,len(codon),k)])
-
-def formatResult(start,stop,prot,codon):
-    return {'STT':start,'STP':stop,'LEN':len(prot),'codon':codon,'protain':prot}
+def formatResult(result,pre_codon,sep='-'):
+    start=result[0]
+    stop=result[-1]
+    codon=result[0:len(result)]
+    prot=read_codon(pre_codon)
+    return {'STT':start,'STP':stop,'LEN':len(codon),'codon':sep.join(codon),'protain':prot}
