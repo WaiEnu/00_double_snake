@@ -70,17 +70,17 @@ def make_codon(read_seq,start):
     k=3
     result=[]
     pre_codon = read_seq[start::]
-    stop=start
-    for i in range(0, len(pre_codon)):
+    stop=start+3
+    for i in range(0, len(pre_codon),k):
         codon = pre_codon[i:i+k]
         stop+=i
         if codon in stop_list:
-            return formatResult(start,stop,result,pre_codon[::start+i])
+            return formatResult(start,stop,result,pre_codon[::stop])
         elif len(codon)<3 :
-            return formatResult(start,stop,result,pre_codon[::start+i])
+            return formatResult(start,stop,result,pre_codon[::stop])
         else:
             result.append(codon)
-    return formatResult(start,stop,result,pre_codon)
+    return formatResult(start,stop,result,read_seq)
 
 def read_codon(pre_codon):
     codon=Seq(pre_codon, IUPAC.ambiguous_rna)
@@ -88,5 +88,5 @@ def read_codon(pre_codon):
     return str(result)
 
 def formatResult(start,stop,codon,pre_codon,sep='-'):
-    prot=read_codon(pre_codon)
+    prot=read_codon(pre_codon[start:stop])
     return {'STT':start,'STP':stop,'LEN':len(codon),'codon':sep.join(codon),'protain':prot}
