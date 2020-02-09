@@ -46,7 +46,7 @@ def getRow(dic,str_obj):
     return [d.get(str_obj) for d in dic]
 
 def rndn_sequence(lens, sep=''):
-    return sep.join([ choice(dna) for x in range(lens) ])
+   return sep.join([ choice(dna) for x in range(lens) ])
 
 def one_flame_shift(mutable_seq,index,start,end):
     out_before = mutable_seq[0:start-1]
@@ -58,35 +58,32 @@ def translate(sequence):
     cDNA_seq = DNA_seq.complement()
     mRNA_seq = DNA_seq.transcribe()
     read_seq = str(mRNA_seq)
-    start = re.finditer(r"AUG",read_seq)
     dic=[]
-    for s in start:
-        tmp=make_codon(read_seq,s.start())
-        tmp.update({'DNA':str(DNA_seq),'cDNA': str(cDNA_seq),'mRNA': read_seq})
-        dic.append(tmp)
+    if re.findall(r"AUG",read_seq) == []:
+        dic.append({'STT':0,'STP':0,'LEN':0,'codon':'','protain':'','DNA':str(DNA_seq),'cDNA': str(cDNA_seq),'mRNA': read_seq})
+    else:
+        start = re.finditer(r"AUG",read_seq)
+        for s in start:
+            tmp=make_codon(read_seq,s.start())
+            tmp.update({'DNA':str(DNA_seq),'cDNA': str(cDNA_seq),'mRNA': read_seq})
+            dic.append(tmp)
     return dic
 
 def make_codon(read_seq,start):
-    k=3
-    result=[]
-    pre_codon = read_seq[start::]
-    stop=start+3
-    for i in range(0, len(pre_codon),k):
-        codon = pre_codon[i:i+k]
-        stop+=i
-        if codon in stop_list:
-            return formatResult(start,stop,result,pre_codon[::stop])
-        elif len(codon)<3 :
-            return formatResult(start,stop,result,pre_codon[::stop])
-        else:
-            result.append(codon)
-    return formatResult(start,stop,result,read_seq)
+    pre_codon = read_seq[start:]
+    pre_prot = read_codon(pre_codon)
+    point = pre_prot.find(stop_str)
+    stop = point
+    if point+1>0:
+        stop=start+point*3
+    codon=pre_codon[:stop]
+    prot=pre_prot[:point]
+    return formatResult(start,stop,codon,prot)
 
 def read_codon(pre_codon):
     codon=Seq(pre_codon, IUPAC.ambiguous_rna)
-    result=codon.translate()
+    result=codon.translate(stop_symbol=stop_str)
     return str(result)
 
-def formatResult(start,stop,codon,pre_codon,sep='-'):
-    prot=read_codon(pre_codon[start:stop])
-    return {'STT':start,'STP':stop,'LEN':len(codon),'codon':sep.join(codon),'protain':prot}
+def formatResult(start,stop,codon,prot,sep='-'):
+    return {'STT':start+1,'STP':stop+1,'LEN':len(prot),'codon':codon,'protain':prot}
