@@ -69,10 +69,10 @@ def make_read_sec(read_ret_df):
 # → 開始位置を割り出せば大体の長さの見当がつく？
 def draw_graph(graph_df,title):
     fig = Figure()
-    fig, axes = plt.subplots(2, 2, figsize=(6, 6))
-    sns.scatterplot(x='STT', y='STP', data=graph_df, ax=axes[0,0])
-    sns.scatterplot(x='STT', y='LEN', data=graph_df, ax=axes[0,1])
-    sns.distplot(graph_df['LEN'], kde=True, rug=True, ax=axes[1,0])
+    fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(9,3))
+    sns.scatterplot(x='STT', y='STP', data=graph_df, ax=axes[0])
+    sns.scatterplot(x='STT', y='LEN', data=graph_df, ax=axes[1])
+    sns.distplot(graph_df['LEN'], kde=True, rug=True, ax=axes[2])
     fig.tight_layout()
     canvas = FigureCanvasAgg(fig)
     png_output = BytesIO()
