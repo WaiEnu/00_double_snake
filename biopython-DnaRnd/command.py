@@ -38,7 +38,6 @@ def gen():
     table_m = make_table_sec(data_m)
     read_o = make_read_sec(data_o)
     read_m = make_read_sec(data_m)
-
     return render_template('index.html',table_o=table_o,table_m=table_m,read_o=read_o,read_m=read_m,graph_o=graph_o,graph_m=graph_m)
 
 def make_graph_origin(origin=None):
