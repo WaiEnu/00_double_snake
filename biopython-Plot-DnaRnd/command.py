@@ -38,7 +38,7 @@ def gen():
     read_mutate = Markup(generate.make_read_sec(data_mutate['read']))
 
     return render_template('index.html',table_origin=table_origin,table_mutate=table_mutate,read_origin=read_origin,read_mutate=read_mutate,origin=origin,mutate=mutate)
- 
+
 @app.route("/get/<align>",methods=["GET","POST"])
 def returnGpaph(keys):
     graph_deta=None
