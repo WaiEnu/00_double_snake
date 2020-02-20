@@ -1,33 +1,36 @@
-function drawGraph(disp) {
-  var path = "/get/" + disp;
-  var id = "#graph_" + disp;
-  var img = "#plot_" + disp;
-  $(id).append("<h4>" + disp + "</h4>");
-  var plotdata = document.getElementById(img); 
-  $.get(path, function(data) { 
-    plotdata.src = data; 
-  }); 
-};
+$('#length').on('blur', function(){
+  $('#locate').attr({'max': $('#length').val()});
+})
+$('#locate').attr({'max': $('#length').val()});
 
 const vm = new Vue({
   el: '#app',
   delimiters: ["[[", "]]"],
   data: {
-    activePageName: 'origin',
+    activePageName: 'graph',
     icons: [
       {
-        id: 'origin',
-        text: 'origin'
+        id: 'graph',
+        text: 'graph'
       },
       {
-        id: 'mutate',
-        text: 'mutate'
+        id: 'align',
+        text: 'align'
+      },
+      {
+        id: 'read',
+        text: 'read'
       },
     ],
+  },
+  computed: {
   },
   methods: {
     navClick(e) {
       this.activePageName = e.currentTarget.getAttribute('data-icon-text')
     },
+    fillMax: function() {
+    },
   }
+  
 })

@@ -12,10 +12,8 @@ data=DataStore()
 
 @app.route('/')
 def index():
-    data.origin = None
-    data.mutate = None
-    origin = data.origin
-    mutate = data.mutate
+    origin = returnGpaph(None,'origin')
+    mutate = returnGpaph(None,'mutate')
     return render_template('index.html',origin=origin,mutate=mutate)
 
 @app.route('/generate', methods=['POST'])
@@ -28,10 +26,9 @@ def gen():
     data_origin = generate.generate_origin(length,iteration)
     data_mutate = generate.generate_mutant(data_origin,base,locate,length)
 
-    data.origin = data_origin['graph']
-    data.mutate = data_mutate['graph']
-    origin = data.origin
-    mutate = data.mutate
+    origin = returnGpaph(data_origin['graph'],'origin')
+    mutate = returnGpaph(data_mutate['graph'],'mutate')
+
     table_origin = Markup(generate.make_table_sec(data_origin['table']))
     table_mutate = Markup(generate.make_table_sec(data_mutate['table']))
     read_origin = Markup(generate.make_read_sec(data_origin['read']))
@@ -39,17 +36,11 @@ def gen():
 
     return render_template('index.html',table_origin=table_origin,table_mutate=table_mutate,read_origin=read_origin,read_mutate=read_mutate,origin=origin,mutate=mutate)
 
-@app.route("/get/<align>",methods=["GET","POST"])
-def returnGpaph(keys):
-    graph_deta=None
-    if keys=='origin':
-        graph_deta=data.origin
-    elif keys=='mutate':
-        graph_deta=data.mutate
+def returnGpaph(graph_deta,key):
     src= ""
     if graph_deta is not None:
         src += "data:image/png:base64,"
-        src += generate.get_graph(graph_deta,keys)
+        src += generate.get_graph(graph_deta,key)
     return src
 
 if __name__ == '__main__':
