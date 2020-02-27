@@ -5,9 +5,9 @@
     <div class="formset">
       <form id="generate" method="POST" action="/generate">
         <div class="fieldset">
-          <label class="field_input" for="length">塩基長　　　：<input name="length" id="length" value="1000" type="number" step="1" min="1000" max="100000000"></label>
-          <label class="field_input" for="iteration">配列本数　　：<input name="iteration" id="number" value="1000" type="number" step="1" min="0" max="100000"></label>
-          <label class="field_input" for="locate">変異導入箇所：<input name="locate" id="locate" value="3" type="number" step="1" min="0" max="100000000"></label>
+          <label class="field_input" for="length">塩基長　　　：<input name="length" id="length" type="number" step="100" min="100" max="10000" v-model="align"></label>
+          <label class="field_input" for="locate">変異導入箇所：<input name="locate" id="locate" type="range" value="1" step="1" min="1" v-bind:max="align">[[align]]</label>
+          <label class="field_input" for="iteration">配列本数　　：<input name="iteration" id="number" type="number" value="1000" step="1" min="1" max="10000"></label>
           <label class="field_input" for="base">導入変異　　：<select name="base" id="base">
             <option value="1">A挿入</option>
             <option value="2">G挿入</option>

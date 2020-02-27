@@ -2,6 +2,7 @@ const vm = new Vue({
     el: '#app',
     delimiters: ["[[", "]]"],
     data: {
+      align:'100',
       activePageName: 'origin',
       icons: [
         {
