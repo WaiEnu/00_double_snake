@@ -5,9 +5,9 @@
     <div class="formset">
       <form id="generate" method="POST" action="/generate">
         <div class="fieldset">
-          <label class="field_input" for="length">塩基長　　　：<input name="length" id="length" type="number" step="100" min="100" max="10000" v-model="align"></label>
-          <label class="field_input" for="locate">変異導入箇所：<input name="locate" id="locate" type="range" value="1" step="1" min="1" v-bind:max="align">[[align]]</label>
-          <label class="field_input" for="iteration">配列本数　　：<input name="iteration" id="number" type="number" value="1000" step="1" min="1" max="10000"></label>
+          <label class="field_input" for="length">塩基長　　　：<input name="length" id="length" value="100" type="number" step="100" min="100" max="1000"></label>
+          <label class="field_input" for="iteration">配列本数　　：<input name="iteration" id="number" value="1000" type="number" step="10" min="1000" max="10000"></label>
+          <label class="field_input" for="locate">変異導入箇所：<input name="locate" id="locate" value="1" type="number" step="1" min="1" max="1000"></label>
           <label class="field_input" for="base">導入変異　　：<select name="base" id="base">
             <option value="1">A挿入</option>
             <option value="2">G挿入</option>
@@ -33,31 +33,34 @@
         [[ icon.text ]]
       </li>
     </ul>
-    <div class="contents" v-if="activePageName == 'origin'">
-      <div id="graph_origin">
-        <img id=plt_origin src="{{ graph_o }}"></img>
-      </div>
-      <div id="table_origin">
-        {{ table_o }}
-      </div>
-      <div id="read_origin">
-        {{ read_o }}
+    <div class="contents" v-if="activePageName == 'graph'">
+      <div id="graph_origin"> 
+        <img id=plt_origin src="{{ origin }}"></img> 
+      </div> 
+      <div id="graph_mutate">
+        <img id=plt_mutate src="{{ mutate }}"></img> 
       </div>
     </div>
-    <div class="contents" v-else-if="activePageName == 'mutate'">
-      <div id="graph_mutate">
-        <img id=plt_mutate src="{{ graph_m }}"></img>
+    <div class="contents" v-else-if="activePageName == 'align'">
+      <div id="table_origin">
+        {{ table_origin }}
       </div>
       <div id="table_mutate">
-        {{ table_m }}
+        {{ table_mutate }}
+      </div>
+    </div>
+    <div class="contents" v-else-if="activePageName == 'read'">
+      <div id="read_origin">
+        {{ read_origin }}
       </div>
       <div id="read_mutate">
-        {{ read_m }}
+        {{ read_mutate }}
       </div>
     </div>
   </main>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
+<script src="http://d3js.org/d3.v5.min.js"></script>
 <script src="/static/js/main.js" type="text/javascript"></script>
 {% endblock %}
